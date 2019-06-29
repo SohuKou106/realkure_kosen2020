@@ -1,0 +1,62 @@
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+#container {
+  height: 80%;
+  flex-grow: 1;
+  display: flex;
+}
+
+.leaflet-container {
+  flex-grow: 1
+}
+
+.App-header {
+  background-color: #5fbcd3;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  height: 10%;
+}
+
+.header-logo {
+  width: 18%;
+  height: 18%;
+  max-height: 60px;
+  max-width: 60px;
+}
+
+.App-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+div.none{
+  background-color: #2c89A0;
+  width: calc(100% / 3) ;
+}
+
+div.current{
+  background-color: #5fbcd3;
+  width: calc(100% / 3) ;
+}
+
+.header-title {
+  font-size: 5vw;
+}
+
+.navImage {
+  width: 40%;
+  height: 40%;
+  max-height: 55px;
+  max-width: 55px;
+}

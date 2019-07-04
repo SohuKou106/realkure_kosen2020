@@ -12,6 +12,7 @@ import ShopLogo from './images/shop.png'
 import MyPageLogo from './images/mypage.png'
 import classNames from 'classnames'
 import {LMap} from './LMap'
+import {Shop} from './Shop'
 import {Camera} from './Camera'
 
 const App = () => (
@@ -98,10 +99,6 @@ class Footer extends React.Component {
     )
   }
 }
-
-const Shop = () => (
-  <div id='container'></div>
-)
 
 const MyPage = () => (
   <div id='container'></div>

@@ -10,6 +10,8 @@
   height: 80%;
   flex-grow: 1;
   display: flex;
+  flex-direction: column;
+  background-color: rgb(238, 238, 238);
 }
 
 .leaflet-container {
@@ -40,14 +42,38 @@
   justify-content: center;
 }
 
+.shopTab {
+  height: 10%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-grow: 1;
+  font-size: 5vw;
+  font-weight: bold;
+}
+
+.shopList {
+  display: flex;
+  flex-grow: 9;
+}
+
 div.none{
   background-color: #2c89A0;
   width: calc(100% / 3) ;
+}
+div.shop-none {
+  color: black;
+  width: calc(100% / 5) ;
 }
 
 div.current{
   background-color: #5fbcd3;
   width: calc(100% / 3) ;
+}
+div.shop-current {
+  color: orange;
+  width: calc(100% / 5) ;
 }
 
 .header-title {

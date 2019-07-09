@@ -49,13 +49,16 @@
   justify-content: center;
   display: flex;
   flex-grow: 1;
-  font-size: 5vw;
+  font-size: 4vw;
   font-weight: bold;
 }
 
 .shopList {
   display: flex;
-  flex-grow: 9;
+  flex-grow: 12;
+  flex-direction: column;
+  flex-basis: 0;
+  overflow-y: scroll;
 }
 
 div.none{

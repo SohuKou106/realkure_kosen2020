@@ -25,6 +25,36 @@ var StoreList = Bookshelf.Model.extend({
   tableName: 'store_list'
 })
 
+app.get('/api/restaurant', (req, res) => {
+  new StoreList().where('gnere', '=', '食事').fetchAll()
+  .then((collection) => {
+    res.json({status: true, content: collection.toArray()})
+  })
+  .catch((err) => {
+    res.json({status: false})
+  })
+})
+
+app.get('/api/cafe', (req, res) => {
+  new StoreList().where('gnere', '=', 'カフェ').fetchAll()
+  .then((collection) => {
+    res.json({status: true, content: collection.toArray()})
+  })
+  .catch((err) => {
+    res.json({status: false})
+  })
+})
+
+app.get('/api/tavern', (req, res) => {
+  new StoreList().where('gnere', '=', '居酒屋').fetchAll()
+  .then((collection) => {
+    res.json({status: true, content: collection.toArray()})
+  })
+  .catch((err) => {
+    res.json({status: false})
+  })
+})
+
 // 静的ファイルを自動的に返すようルーティングする
 app.use('/public', express.static('./public'))
 app.use('/camera', express.static('./public'))

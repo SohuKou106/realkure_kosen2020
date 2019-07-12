@@ -25,6 +25,10 @@ var StoreList = Bookshelf.Model.extend({
   tableName: 'store_list'
 })
 
+var PlaceList = Bookshelf.Model.extend({
+  tableName: 'place_list'
+})
+
 app.get('/api/restaurant', (req, res) => {
   new StoreList().where('gnere', '=', '食事').fetchAll()
   .then((collection) => {
@@ -49,6 +53,34 @@ app.get('/api/tavern', (req, res) => {
   new StoreList().where('gnere', '=', '居酒屋').fetchAll()
   .then((collection) => {
     res.json({status: true, content: collection.toArray()})
+  })
+  .catch((err) => {
+    res.json({status: false})
+  })
+})
+
+app.get('/api/hotel', (req, res) => {
+  new PlaceList().where('gnere', '=', '宿泊').fetchAll()
+  .then((collection) => {
+    res.json({status: true, content: collection.toArray()})
+  })
+  .catch((err) => {
+    res.json({status: false})
+  })
+})
+
+app.get('/api/other', (req, res) => {
+  new PlaceList().where('gnere', '=', 'その他').fetchAll()
+  .then((collection) => {
+    var collection_place = collection.toArray()
+    new StoreList().where('gnere', '=', 'その他').fetchAll()
+      .then((collection) => {
+        var collection_store = collection.toArray()
+        var collection_concat = collection_place.concat(collection_store)
+        res.json({status: true, content: collection_concat})
+      })
+      .catch((err) => {
+      })
   })
   .catch((err) => {
     res.json({status: false})

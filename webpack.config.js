@@ -15,8 +15,11 @@ module.exports = {
         options: {
           presets: [
             '@babel/preset-env',
-            '@babel/preset-react'
-          ]
+            //{
+            //  "useBuiltIns": "entry"
+            //},
+            '@babel/preset-react',
+          ],
         }
       },
       {

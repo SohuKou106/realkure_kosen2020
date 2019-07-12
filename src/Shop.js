@@ -30,7 +30,7 @@ export class Shop extends React.Component {
         navCopy[i] = false
       }
     }
-    this.setState({nav: navCopy})
+    this.setState({nav: navCopy, shop_list: []})
     switch (k) {
       case 0:
         request
@@ -53,6 +53,24 @@ export class Shop extends React.Component {
       case 2:
         request
           .get('/api/tavern')
+          .accept('application/json')
+          .end((err, res) => {
+            if (err) return
+            this.setState({shop_list: res.body.content})
+          })
+        break;
+      case 3:
+        request
+          .get('/api/hotel')
+          .accept('application/json')
+          .end((err, res) => {
+            if (err) return
+            this.setState({shop_list: res.body.content})
+          })
+        break;
+      case 4:
+        request
+          .get('/api/other')
           .accept('application/json')
           .end((err, res) => {
             if (err) return

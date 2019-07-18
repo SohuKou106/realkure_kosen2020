@@ -5,7 +5,8 @@ import request from 'superagent'
 export class Shop extends React.Component {
   constructor (props) {
     super(props)
-    this.shopTabTapHandler = this.shopTabTapHandler.bind(this);
+    this.shopTabTapHandler = this.shopTabTapHandler.bind(this)
+    this.shopPosition = this.shopPosition.bind(this)
     this.state = {
       nav: [true, false, false, false, false],
       shop_list: []
@@ -19,6 +20,11 @@ export class Shop extends React.Component {
         if (err) return
         this.setState({shop_list: res.body.content})
       })
+  }
+  shopPosition (e) {
+    const lat = Number(e.currentTarget.getAttribute('lat'))
+    const lng = Number(e.currentTarget.getAttribute('lng'))
+    this.props.shopLocate(lat, lng)
   }
   shopTabTapHandler (e) {
     const navCopy = this.state.nav.slice()
@@ -132,7 +138,7 @@ export class Shop extends React.Component {
         <div key={`${e.id}`} style={styles.list}>
           <img src={imgUrl} style={styles.shopImage} />
           <div style={styles.shopInfo}>
-            <div style={styles.shopName}>{e.name}</div>
+            <div onClick={this.shopPosition} lat={e.latitude} lng={e.longitude} style={styles.shopName}>{e.name}</div>
             <div style={styles.shopAddress}>{e.address1}{e.address2}</div>
           </div>
         </div>

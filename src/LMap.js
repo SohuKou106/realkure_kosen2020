@@ -3,7 +3,7 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import CameraLogo from './images/camera.png'
 import './LMap.css'
-import '@babel/polyfill';
+//import '@babel/polyfill';
 
 export class LMap extends React.Component {
   constructor (props) {
@@ -20,6 +20,7 @@ export class LMap extends React.Component {
       this.getCurrentPosition();
       setInterval(this.getCurrentPosition, 5000)
     }
+    console.log(this.props.shoplat, this.props.shoplng)
   }
 
   componentWillUnmount () {
@@ -41,6 +42,10 @@ export class LMap extends React.Component {
   }
 
   render () {
+    var shopMerker
+    if (this.props.shoplat != null, this.props.shoplng != null) {
+      shopMerker = <Marker position={[this.props.shoplat, this.props.shoplng]}></Marker>
+    }
     return (
       <div id='container'>
         <Map center={this.state.position} zoom={15} minZoom={14} maxZoom={18}>
@@ -49,6 +54,7 @@ export class LMap extends React.Component {
             attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           />
           <Marker position={[this.state.mobile_lat, this.state.mobile_lng]}></Marker>
+          {shopMerker}
         </Map>
         <a href={'/camera'} className='navCamera'><img src={CameraLogo} alt="" className="navCameraImage"></img></a>
       </div>

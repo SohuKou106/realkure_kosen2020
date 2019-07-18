@@ -30,26 +30,41 @@ class Home extends React.Component {
   constructor (props) {
     super(props)
     this.bindFunc = this.func.bind(this)
+    this.bindShopLocate = this.shopLocate.bind(this)
     this.state = {
-      nav: 0,
-      Component: LMap
+      nav: 0, navBool: [true, false, false],
+      Component: LMap,
+      shoplat: null,
+      shoplng: null
     }
   }
   func (nav) {
-    switch (nav) {
-      case 0: this.setState({Component: LMap}); break
-      case 1: this.setState({Component: Shop}); break
-      case 2: this.setState({Component: MyPage}); break
-      default: this.setState({Component: LMap}); break
+    const navCopy = this.state.navBool.slice()
+    for (var i = 0; i < 3; i++) {
+      if (i == nav) {
+        navCopy[i] = true
+      } else {
+        navCopy[i] = false
+      }
     }
+    switch (nav) {
+      case 0: this.setState({nav: nav, navBool: navCopy, Component: LMap}); break
+      case 1: this.setState({nav: nav, navBool: navCopy, Component: Shop}); break
+      case 2: this.setState({nav: nav, navBool: navCopy, Component: MyPage}); break
+      default: this.setState({nav: nav, navBool: navCopy, Component: LMap}); break
+    }
+  }
+  shopLocate (lat, lng) {
+    this.setState({shoplat: lat, shoplng: lng, Component: LMap, nav: 0})
+    this.bindFunc(0)
   }
   render () {
     const {Component} = this.state
     return (
       <div className="App">
         <Header />
-        <Component />
-        <Footer func={this.bindFunc}/>
+        <Component shoplat={this.state.shoplat} shoplng={this.state.shoplng} shopLocate={this.bindShopLocate}/>
+        <Footer func={this.bindFunc} nav={this.state.navBool}/>
       </div>
     )
   }
@@ -69,27 +84,15 @@ class Footer extends React.Component {
   constructor (props) {
     super(props)
     this.navTapHandler = this.navTapHandler.bind(this);
-    this.state = {
-      nav: [true, false, false],
-    }
   }
   navTapHandler (e) {
-    const navCopy = this.state.nav.slice()
     const k = Number(e.currentTarget.getAttribute('nav-num'))
-    for (var i = 0; i < 3; i++) {
-      if (i === k) {
-        navCopy[i] = true
-        this.props.func(i);
-      } else {
-        navCopy[i] = false
-      }
-    }
-    this.setState({nav: navCopy})
+    this.props.func(k)
   }
   render () {
-    var navMap = classNames({'current': this.state.nav[0]}, {'none': !this.state.nav[0]})
-    var navShop = classNames({'current': this.state.nav[1]}, {'none': !this.state.nav[1]})
-    var navMyPage = classNames({'current': this.state.nav[2]}, {'none': !this.state.nav[2]})
+    var navMap = classNames({'current': this.props.nav[0]}, {'none': !this.props.nav[0]})
+    var navShop = classNames({'current': this.props.nav[1]}, {'none': !this.props.nav[1]})
+    var navMyPage = classNames({'current': this.props.nav[2]}, {'none': !this.props.nav[2]})
     return (
       <footer className="App-footer">
         <div className={navMap} onClick={this.navTapHandler} nav-num="0"><img src={MapLogo} alt="" className="navImage"></img></div>

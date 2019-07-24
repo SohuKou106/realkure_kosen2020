@@ -38,6 +38,8 @@ export class LMap extends React.Component {
     var data = position.coords
     var lat = data.latitude
     var lng = data.longitude
+    //lat = 34.231288
+    //lng = 132.603037
     this.setState({mobile_lat: lat, mobile_lng: lng}) 
   }
 

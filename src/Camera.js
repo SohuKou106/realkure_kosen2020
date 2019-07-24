@@ -9,16 +9,18 @@ export class Camera extends React.Component {
       <div id="cam">
         <AFrameRenderer vr-mode-ui="enabled:false;" arToolKit={{ sourceType: 'webcam', debugUIEnabled: false }}>
           <Marker parameters={{ preset: "pattern", type: 'pattern', url: 'pattern-marker.patt' }}>
-            <a-box color="red" position="0 0 0" scale="0.3 0.6 0.3">
-              <a-animation
-                attribute="rotation"
-                to="360 360 0"
-                dur="2000"
-                easing="linear"
-                repeat="indefinite"
-              />
-              
-            </a-box>
+            <a-entity gltf-model="src: url(./kureshi.gltf);"
+                  animation-mixer="loop: pingpong;"
+                  position="0 0.1 0"
+                  scale="0.25 0.25 0.25"
+                  shadow="receive: false"></a-entity>
+            <a-plane position="0 0 0"
+                 rotation="-90 0 0"
+                 width="2" height="2"
+                 color="#fff"
+                 shadow="receive: true"></a-plane>
+             <a-entity light="type: directional; color: #fff; castShadow:true;"
+                  position="-10 10 10"></a-entity>
           </Marker>
         </AFrameRenderer>
         <a href={'/'} className='navCamera'><img src={CameraLogo} alt="" className="navCameraImage"></img></a>

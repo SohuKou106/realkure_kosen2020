@@ -9,7 +9,7 @@ export class Camera extends React.Component {
       <div id="cam">
         <AFrameRenderer vr-mode-ui="enabled:false;" arToolKit={{ sourceType: 'webcam', debugUIEnabled: false }}>
           <Marker parameters={{ preset: "pattern", type: 'pattern', url: 'pattern-marker.patt' }}>
-            <a-entity gltf-model="src: url(./kureshi.gltf);"
+            <a-entity gltf-model="src: url(./Kureshi.gltf);"
                   animation-mixer="loop: pingpong;"
                   position="0 0.1 0"
                   scale="0.25 0.25 0.25"

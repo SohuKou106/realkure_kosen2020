@@ -5,8 +5,8 @@ const https = require('https')
 const app = express()
 
 const options = {
-  pfx: fs.readFileSync('./private/server.pfx'),
-  passphrase: 'k1gea25a'
+  key: fs.readFileSync('./private/server.key'),
+  cert: fs.readFileSync('./private/server-cert.pem')
 }
 
 https.createServer(options, app).listen(443)

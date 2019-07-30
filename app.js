@@ -5,8 +5,8 @@ const https = require('https')
 const app = express()
 
 const options = {
-  key: fs.readFileSync('./private/server.key'),
-  cert: fs.readFileSync('./private/server-cert.pem')
+  key: fs.readFileSync('./private/real-kure.key'),
+  cert: fs.readFileSync('./private/real-kure.crt')
 }
 
 https.createServer(options, app).listen(443)

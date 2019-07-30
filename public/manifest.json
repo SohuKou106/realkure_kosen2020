@@ -1,6 +1,6 @@
 {
-  "short_name": "Real KURE",
-  "name": "Real KURE",
+  "short_name": "りあるくれ",
+  "name": "りあるくれ",
   "icons": [
     {
       "src": "favicon.ico",
@@ -9,7 +9,7 @@
     }
   ],
   "start_url": ".",
-  "display": "standalone",
+  "display": "fullscreen",
   "theme_color": "#5fbcd3",
   "background_color": "#ffffff"
 }

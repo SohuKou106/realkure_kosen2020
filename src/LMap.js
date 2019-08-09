@@ -1,5 +1,5 @@
 import React from 'react'
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Map, Marker, Popup, TileLayer, Rectangle } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import CameraLogo from './images/camera.png'
 import './LMap.css'
@@ -11,7 +11,8 @@ export class LMap extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      position: [34.244659, 132.557402], mobile_lat: null, mobile_lng: null
+      position: [34.244659, 132.557402], mobile_lat: null, mobile_lng: null,
+      rectangle: [[34.194218, 132.495934], [34.265231, 132.651786]]
     }
     this.getCurrentPosition = this.getCurrentPosition.bind(this)
     this.mobilePosition = this.mobilePosition.bind(this)
@@ -55,9 +56,9 @@ export class LMap extends React.Component {
     }
     return (
       <div id='container'>
-        <Map ref='map' center={this.state.position} zoom={15} minZoom={14} maxZoom={18}>
+        <Map ref='map' center={this.state.position} zoom={15} minZoom={14} maxZoom={18} maxBounds={this.state.rectangle}>
           <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            url="tiles/{z}/{x}/{y}.png"
             attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
           />
           {Merker}

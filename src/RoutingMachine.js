@@ -10,7 +10,10 @@ class RoutingMachine extends MapLayer {
         waypoints: [
             L.latLng(from[0], from[1]),
             L.latLng(to[0], to[1]),
-        ]
+        ],
+        router: new L.Routing.OSRMv1({
+          serviceUrl: 'https://osrm.real-kure.net/route/v1'
+        })
     }).addTo(map.leafletElement);
     return leafletElement.getPlan();;
   }

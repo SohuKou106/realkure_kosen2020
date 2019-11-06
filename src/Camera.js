@@ -1,5 +1,5 @@
 import React from 'react'
-import CameraLogo from './images/camera.png'
+import CameraBack from './images/icon-back.png'
 import { AFrameRenderer, Marker } from 'react-web-ar'
 import './Camera.css'
 
@@ -9,7 +9,7 @@ export class Camera extends React.Component {
       <div id="cam">
         <AFrameRenderer vr-mode-ui="enabled:false;" arToolKit={{ sourceType: 'webcam', debugUIEnabled: false }}>
           <Marker parameters={{ preset: "pattern", type: 'pattern', url: 'pattern-marker.patt' }}>
-            <a-entity gltf-model="src: url(./Kureshi.gltf);"
+            <a-entity gltf-model="src: url(./models/1kureshi_banzai.gltf);"
                   animation-mixer="loop: pingpong;"
                   position="0 0.1 0"
                   scale="0.25 0.25 0.25"
@@ -23,7 +23,7 @@ export class Camera extends React.Component {
                   position="-10 10 10"></a-entity>
           </Marker>
         </AFrameRenderer>
-        <a href={'/'} className='navCamera'><img src={CameraLogo} alt="" className="navCameraImage"></img></a>
+        <a href={'/'} className='navCamera'><img src={CameraBack} alt="" className="navCameraImage"></img></a>
       </div>
     )
   }

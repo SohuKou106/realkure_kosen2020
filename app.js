@@ -1,15 +1,19 @@
 // サーバー起動
 const express = require('express')
-const fs = require('fs')
-const https = require('https')
+//const fs = require('fs')
+//const https = require('https')
 const app = express()
 
+/*
 const options = {
   key: fs.readFileSync('./private/real-kure.key'),
   cert: fs.readFileSync('./private/real-kure.crt')
 }
 
 https.createServer(options, app).listen(443)
+*/
+
+app.listen(3010, () => console.log('demo server open'))
 
 const knex = require('knex')({
   dialect: 'sqlite3',

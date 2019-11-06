@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import request from 'superagent'
+import noimage from './images/noimage.png'
 
 export class Shop extends React.Component {
   constructor (props) {
@@ -112,12 +113,15 @@ export class Shop extends React.Component {
         display: 'flex',
         flexDirection: 'row'
       },
+      imgField: {
+        flexBasis: '22vw',
+      },
       shopImage: {
+        margin: '9px',
         width: '20vw',
-        margin: '12px'
+        height: '20vw',
       },
       shopInfo: {
-        flexGrow: '1',
         display: 'flex',
         flexDirection: 'column',
         margin: '3px'
@@ -130,17 +134,23 @@ export class Shop extends React.Component {
       shopAddress: {
         fontSize: '3vw',
         textAlign: 'left'
+      },
+      shopIntro: {
+        fontSize: '4vw',
+        textAlign: 'left',
+        margin: '2px'
       }
     }
     const shop_list = this.state.shop_list.map(e => {
-      var imgUrl = 'noimage.png'
       return (
         <div key={`${e.id}`} style={styles.list}>
-          <img src={imgUrl} style={styles.shopImage} />
+          <div style={styles.imgField}><img src={'./images/stores/' + `${e.id}` + '.jpg'} style={styles.shopImage} onError={e => e.target.src = noimage} /></div>
           <div style={styles.shopInfo}>
             <div onClick={this.shopPosition} lat={e.latitude} lng={e.longitude} style={styles.shopName}>{e.name}</div>
             <div style={styles.shopAddress}>{e.address1}{e.address2}</div>
+            <div style={styles.shopIntro}>{e.intro}</div>
           </div>
+          
         </div>
       )
     })

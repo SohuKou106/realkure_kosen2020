@@ -30,12 +30,14 @@ class Home extends React.Component {
   constructor (props) {
     super(props)
     this.bindFunc = this.func.bind(this)
+    this.sbindFunc = this.sfunc.bind(this)
     this.bindShopLocate = this.shopLocate.bind(this)
     this.state = {
       nav: 0, navBool: [true, false, false],
       Component: LMap,
       shoplat: null,
-      shoplng: null
+      shoplng: null,
+      sightseeing: 0
     }
   }
   func (nav) {
@@ -54,8 +56,11 @@ class Home extends React.Component {
       default: this.setState({nav: nav, navBool: navCopy, Component: LMap}); break
     }
   }
+  sfunc (n) {
+    this.setState({sightseeing: n, nav: 0, navBool: [true, false, false], Component: LMap})
+  }
   shopLocate (lat, lng) {
-    this.setState({shoplat: lat, shoplng: lng, Component: LMap, nav: 0})
+    this.setState({shoplat: lat, shoplng: lng, Component: LMap, nav: 0, sightseeing: 0})
     this.bindFunc(0)
   }
   render () {
@@ -63,7 +68,11 @@ class Home extends React.Component {
     return (
       <div className="App">
         <Header />
-        <Component shoplat={this.state.shoplat} shoplng={this.state.shoplng} shopLocate={this.bindShopLocate}/>
+        <Component shoplat={this.state.shoplat}
+            shoplng={this.state.shoplng}
+            shopLocate={this.bindShopLocate}
+            sfunc={this.sbindFunc}
+            sightseeing={this.state.sightseeing}/>
         <Footer func={this.bindFunc} nav={this.state.navBool}/>
       </div>
     )
@@ -103,8 +112,23 @@ class Footer extends React.Component {
   }
 }
 
-const MyPage = () => (
-  <div id='container'></div>
-)
+class MyPage extends React.Component {
+  constructor (props) {
+    super(props)
+    this.sightseeingHandler = this.sightseeingHandler.bind(this);
+  }
+  sightseeingHandler (n) {
+    this.props.sfunc(n)
+  }
+  render () {
+    return (
+      <div id='container'>
+        <button className='sightseeingBtn' onClick={() => this.sightseeingHandler(1)}>呉市の歴史を巡るコース</button>
+        <button className='sightseeingBtn' onClick={() => this.sightseeingHandler(2)}>居酒屋○次会コース（中通り内回り）</button>
+        <button className='sightseeingBtn' onClick={() => this.sightseeingHandler(5)}>夜のカフェバー巡りコース</button>
+      </div>
+    )
+  }
+}
 
 export default App;

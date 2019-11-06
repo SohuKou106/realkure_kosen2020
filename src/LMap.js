@@ -49,7 +49,7 @@ export class LMap extends React.Component {
   render () {
     var Merker, shopRouting
     if (this.state.mobile_lat != null && this.state.mobile_lng != null) {
-      Merker = <Marker position={[this.state.mobile_lat, this.state.mobile_lng]}></Marker>
+      Merker = <Marker position={[this.state.mobile_lat, this.state.mobile_lng]} icon={mobilePoint}></Marker>
       if (this.props.shoplat != null && this.props.shoplng != null) {
         shopRouting = <Routing map={this.refs.map} from={[this.state.mobile_lat, this.state.mobile_lng]} to={[this.props.shoplat, this.props.shoplng]}></Routing>
       }
@@ -106,3 +106,14 @@ export class LMap extends React.Component {
     )
   }
 }
+
+export const mobilePoint = new L.Icon({
+  iconUrl: require('./assets/mobileIcon.png'),
+  iconRetinaUrl: require('./assets/mobileIcon.png'),
+  iconAnchor: [20, 20],
+  popupAnchor: [0, -35],
+  iconSize: [40, 40],
+  shadowUrl: './assets/marker-shadow.png',
+  shadowSize: [29, 40],
+  shadowAnchor: [7, 40],
+})

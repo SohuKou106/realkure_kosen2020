@@ -3,7 +3,7 @@ import { Map, Marker, Popup, TileLayer, Rectangle } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import CameraLogo from './images/camera.png'
 import './LMap.css'
-import '.leaflet-routing-machine.css'
+import './leaflet-routing-machine.css'
 import Routing from './RoutingMachine'
 //import '@babel/polyfill';
 

@@ -3,7 +3,7 @@ import { Map, Marker, Popup, TileLayer, Rectangle } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import CameraLogo from './images/camera.png'
 import './LMap.css'
-import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
+import '.leaflet-routing-machine.css'
 import Routing from './RoutingMachine'
 //import '@babel/polyfill';
 
@@ -110,10 +110,10 @@ export class LMap extends React.Component {
 export const mobilePoint = new L.Icon({
   iconUrl: require('./assets/mobileIcon.png'),
   iconRetinaUrl: require('./assets/mobileIcon.png'),
-  iconAnchor: [20, 20],
-  popupAnchor: [0, -35],
-  iconSize: [40, 40],
+  iconAnchor: [10, 10],
+  popupAnchor: [0, 10],
+  iconSize: [20, 20],
   shadowUrl: './assets/marker-shadow.png',
-  shadowSize: [29, 40],
-  shadowAnchor: [7, 40],
+  shadowSize: [20, 20],
+  shadowAnchor: [10, 20],
 })

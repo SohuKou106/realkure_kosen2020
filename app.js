@@ -3,15 +3,16 @@ const express = require('express')
 //const fs = require('fs')
 //const https = require('https')
 const app = express()
+const bodyParser = require('body-parser')
 
 /*
 const options = {
   key: fs.readFileSync('./private/real-kure.key'),
   cert: fs.readFileSync('./private/real-kure.crt')
 }
-
-https.createServer(options, app).listen(443)
 */
+
+//https.createServer(options, app).listen(443)
 
 app.listen(3010, () => console.log('demo server open'))
 
@@ -31,6 +32,20 @@ var StoreList = Bookshelf.Model.extend({
 
 var PlaceList = Bookshelf.Model.extend({
   tableName: 'place_list'
+})
+
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+
+app.get('/api/find', (req, res) => {
+  console.log(req.query)
+  new StoreList().where('id', '=', req.query.sid).fetch()
+  .then((collection)=> {
+    res.json({status: true, content: collection})
+  })
+  .catch((err) => {
+    res.json({status: false})
+  })
 })
 
 app.get('/api/restaurant', (req, res) => {

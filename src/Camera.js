@@ -14,13 +14,8 @@ export class Camera extends React.Component {
                   position="0 0.1 0"
                   scale="0.25 0.25 0.25"
                   shadow="receive: false"></a-entity>
-            <a-plane position="0 0 0"
-                 rotation="-90 0 0"
-                 width="2" height="2"
-                 color="#fff"
-                 shadow="receive: true"></a-plane>
-             <a-entity light="type: directional; color: #fff; castShadow:true;"
-                  position="-10 10 10"></a-entity>
+             <a-entity light="type: directional; color: #fff; intensity:2.5; castShadow:true;"
+                position="-10 10 10"></a-entity>
           </Marker>
         </AFrameRenderer>
         <a href={'/'} className='navCamera'><img src={CameraBack} alt="" className="navCameraImage"></img></a>

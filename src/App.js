@@ -37,6 +37,7 @@ class Home extends React.Component {
       Component: LMap,
       shoplat: null,
       shoplng: null,
+      content: null,
       sightseeing: 0
     }
   }
@@ -59,8 +60,10 @@ class Home extends React.Component {
   sfunc (n) {
     this.setState({sightseeing: n, nav: 0, navBool: [true, false, false], Component: LMap})
   }
-  shopLocate (lat, lng) {
-    this.setState({shoplat: lat, shoplng: lng, Component: LMap, nav: 0, sightseeing: 0})
+  shopLocate (lat, lng, sid, sname, saddress1, saddress2, sintro) {
+    this.setState({shoplat: lat, shoplng: lng,
+                    sid, sname, saddress1, saddress2, sintro,
+                    Component: LMap, nav: 0, sightseeing: 0})
     this.bindFunc(0)
   }
   render () {
@@ -70,6 +73,11 @@ class Home extends React.Component {
         <Header />
         <Component shoplat={this.state.shoplat}
             shoplng={this.state.shoplng}
+            sid={this.state.sid}
+            sname={this.state.sname}
+            saddress1={this.state.saddress1}
+            saddress2={this.state.saddress2}
+            sintro={this.state.sintro}
             shopLocate={this.bindShopLocate}
             sfunc={this.sbindFunc}
             sightseeing={this.state.sightseeing}/>

@@ -25,7 +25,12 @@ export class Shop extends React.Component {
   shopPosition (e) {
     const lat = Number(e.currentTarget.getAttribute('lat'))
     const lng = Number(e.currentTarget.getAttribute('lng'))
-    this.props.shopLocate(lat, lng)
+    const sid = Number(e.currentTarget.getAttribute('sid'))
+    const sname = e.currentTarget.getAttribute('sname')
+    const saddress1 = e.currentTarget.getAttribute('saddress1')
+    const saddress2 = e.currentTarget.getAttribute('saddress2')
+    const sintro = e.currentTarget.getAttribute('sintro')
+    this.props.shopLocate(lat, lng, sid, sname, saddress1, saddress2, sintro)
   }
   shopTabTapHandler (e) {
     const navCopy = this.state.nav.slice()
@@ -146,7 +151,15 @@ export class Shop extends React.Component {
         <div key={`${e.id}`} style={styles.list}>
           <div style={styles.imgField}><img src={'./images/stores/' + `${e.id}` + '.jpg'} style={styles.shopImage} onError={e => e.target.src = noimage} /></div>
           <div style={styles.shopInfo}>
-            <div onClick={this.shopPosition} lat={e.latitude} lng={e.longitude} style={styles.shopName}>{e.name}</div>
+            <div onClick={this.shopPosition}
+                  lat={e.latitude}
+                  lng={e.longitude}
+                  sid={e.id}
+                  sname={e.name}
+                  saddress1={e.address1}
+                  saddress2={e.address2}
+                  sintro={e.intro}
+                  style={styles.shopName}>{e.name}</div>
             <div style={styles.shopAddress}>{e.address1}{e.address2}</div>
             <div style={styles.shopIntro}>{e.intro}</div>
           </div>

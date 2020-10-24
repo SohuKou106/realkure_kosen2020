@@ -1,0 +1,87 @@
+.reviewWindow{
+    position: absolute;
+    top: 60px;
+    left: 0px;
+    bottom: 58px;
+    z-index: 1001;  
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background: rgba(245,245,245,1);
+    width: 60%;
+    border-right: 6px solid #5fbcd3;
+}
+
+.r_header{
+    height: 10%;
+    max-height: 60px;
+    display: flex;
+    flex-direction: row;   
+}
+
+.r_container{
+    height:80%;
+    flex-grow: 1;
+    overflow-y: scroll;    
+}
+
+.w_container{
+    height: 50%;
+    flex-grow: 1;
+}
+
+.r_footer{
+    height:10%;
+    max-height: 60px;
+}
+
+.w_footer{
+    height: 40%;
+    max-height: 240px;
+}
+
+.w_titleBox{
+    height: 5%;
+    max-height: 12px;
+    width: 90%;
+    margin: 20px auto auto auto;
+}
+
+.w_textBox{
+    height: 50%;
+    max-height: 120px;
+    width: 90%;
+    margin: 20px auto auto auto;
+}
+
+.cancelButton{
+    margin: 10px;
+    height: 10%;
+    width: 50%;
+    background-color: #9bdff0;
+    font-size: 2vh;
+}
+
+.reviewText{
+    font-size: 2vh;
+    border-bottom: 3px solid #5fbcd3;
+    font-weight: bold;
+    margin: auto;
+}
+
+.r_closeButton{
+    position: absolute;
+    top: 10px;        
+    width: 40%;
+    height: 40%;
+    max-height: 55px;
+    max-width: 55px;
+}
+
+.writeReviewButton{
+    margin: 10px;
+    height: 50%;
+    width: 50%;
+    background-color: #9bdff0;
+    font-size: 2vh;
+}

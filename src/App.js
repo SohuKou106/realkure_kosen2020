@@ -5,16 +5,22 @@ import {
   Switch,
   Link
 } from 'react-router-dom'
+import Cookies from 'js-cookie'
 import './App.css';
-import MainLogo from './images/logo.png'
+import MainLogo from './images/newlogo_.png'
 import MapLogo from './images/map.png'
 import ShopLogo from './images/shop.png'
 import MyPageLogo from './images/mypage.png'
 import classNames from 'classnames'
 import {LMap} from './LMap'
-import {Shop} from './Shop'
+import {Shop} from './Shop/Shop'
+import {MyPage} from './MyPage'
 import {Camera} from './Camera'
+import {Favorite} from './Favorite/Favorite'
+import {Schedule} from './Schedule'
+import {BeforePage, LMapStatus, ShopData} from './Utilities'
 
+//URLの状態によってホームかカメラかを分ける
 const App = () => (
   <Router>
     <div>
@@ -26,6 +32,9 @@ const App = () => (
   </Router>
 )
 
+//**************************
+//メイン画面
+//**************************
 class Home extends React.Component {
   constructor (props) {
     super(props)
@@ -35,68 +44,124 @@ class Home extends React.Component {
     this.state = {
       nav: 0, navBool: [true, false, false],
       Component: LMap,
-      shoplat: null,
-      shoplng: null,
-      content: null,
-      sightseeing: 0
+      shop_data: {
+        lat: null,
+        lng: null,
+        genre: null,
+        sid: null,
+        sname: null,
+        saddress1: null,
+        saddress2: null,
+        sintro: null,
+        stag1: null,
+        stag2: null,
+        stag3: null,
+        sweek: null,
+        sholi: null,
+        sreg_holi: null,     
+      },
+      sightseeing: 0,
+      checked: [true, true, true, true, true],
+      favId : new Favorite(new Array()),
+      mapStatus: new LMapStatus([34.232009, 132.602588], 18, [true, true, true, true, true]),
+      before_page : new BeforePage(null, this.movePage.bind(this)),
+      search_res: [],
     }
   }
+
+  //**** タブ（フッター）クリック時 ****
   func (nav) {
     const navCopy = this.state.navBool.slice()
-    for (var i = 0; i < 3; i++) {
-      if (i == nav) {
-        navCopy[i] = true
-      } else {
-        navCopy[i] = false
+    //-1:お店の情報をタップしてLMapを表示する場合（ポップアップを自動で表示させる）
+    if(nav === -1){
+      navCopy[0] = true; navCopy[1] = false; navCopy[2] = false;
+    }
+    else{
+      for (var i = 0; i < 3; i++) {
+        if (i == nav) {
+          navCopy[i] = true
+        } else {
+          navCopy[i] = false
+        }
       }
     }
     switch (nav) {
-      case 0: this.setState({nav: nav, navBool: navCopy, Component: LMap}); break
+      case -1: this.setState({nav: 0, navBool: navCopy, Component: LMap}); break
+      case 0: this.setState({shop_data:{lat:null, lng:null, genre:null, sid:null, sname:null,
+                             saddress1: null, saddress2:null, sintro:null,
+                             stag1: null, stag2: null, stag3: null, sweek: null,
+                             sholi: null, sreg_holi: null,},
+                            nav: nav, navBool: navCopy, Component: LMap}); break     
       case 1: this.setState({nav: nav, navBool: navCopy, Component: Shop}); break
-      case 2: this.setState({nav: nav, navBool: navCopy, Component: MyPage}); break
+      case 2: this.setState({nav: nav, navBool: navCopy, Component: Schedule}); break
       default: this.setState({nav: nav, navBool: navCopy, Component: LMap}); break
     }
   }
+
+  //**** 観光ルート表示時 ****
   sfunc (n) {
     this.setState({sightseeing: n, nav: 0, navBool: [true, false, false], Component: LMap})
   }
-  shopLocate (lat, lng, sid, sname, saddress1, saddress2, sintro) {
-    this.setState({shoplat: lat, shoplng: lng,
-                    sid, sname, saddress1, saddress2, sintro,
-                    Component: LMap, nav: 0, sightseeing: 0})
-    this.bindFunc(0)
+
+  //**** お店の位置を地図上に表示 ****
+  shopLocate(shop_data){
+    console.log(shop_data)
+    this.setState({shop_data: shop_data, Component: LMap, nav: 0, sightseeing: 0})    
+    this.bindFunc(-1)
   }
-  render () {
+
+  //ページ遷移
+  movePage (state) {
+    this.setState(state)
+  }
+
+
+
+  render () {  
     const {Component} = this.state
     return (
       <div className="App">
         <Header />
-        <Component shoplat={this.state.shoplat}
-            shoplng={this.state.shoplng}
-            sid={this.state.sid}
-            sname={this.state.sname}
-            saddress1={this.state.saddress1}
-            saddress2={this.state.saddress2}
-            sintro={this.state.sintro}
+         <Component            
+            shop_data={this.state.shop_data}
             shopLocate={this.bindShopLocate}
             sfunc={this.sbindFunc}
-            sightseeing={this.state.sightseeing}/>
+            sightseeing={this.state.sightseeing}
+            shopLocate={this.shopLocate.bind(this)}
+            checked={this.state.checked}
+            favId={this.state.favId}
+            mapStatus={this.state.mapStatus}
+            before_page={this.state.before_page}
+            movePage={this.movePage.bind(this)}
+            search_res={this.state.search_res}/>
         <Footer func={this.bindFunc} nav={this.state.navBool}/>
       </div>
-    )
+    )    
   }
 }
 
+//**************************
+//ヘッダー
+//**************************
 class Header extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+    }
+  }
+
   render () {
     return (
-      <header className="App-header">
-        <img src={MainLogo} alt="" className="header-logo"></img>
-      </header>
+        <header className="App-header">
+          <img src={MainLogo} alt="" className="header-logo"></img>
+        </header>
     )
   }
 }
 
+//**************************
+//フッター
+//**************************
 class Footer extends React.Component {
   constructor (props) {
     super(props)
@@ -107,34 +172,15 @@ class Footer extends React.Component {
     this.props.func(k)
   }
   render () {
-    var navMap = classNames({'current': this.props.nav[0]}, {'none': !this.props.nav[0]})
-    var navShop = classNames({'current': this.props.nav[1]}, {'none': !this.props.nav[1]})
-    var navMyPage = classNames({'current': this.props.nav[2]}, {'none': !this.props.nav[2]})
+    var navMap = classNames({"current": this.props.nav[0]}, {"none": !this.props.nav[0]})
+    var navShop = classNames({"current": this.props.nav[1]}, {"none": !this.props.nav[1]})
+    var navMyPage = classNames({"current": this.props.nav[2]}, {"none": !this.props.nav[2]})
     return (
       <footer className="App-footer">
         <div className={navMap} onClick={this.navTapHandler} nav-num="0"><img src={MapLogo} alt="" className="navImage"></img></div>
         <div className={navShop} onClick={this.navTapHandler} nav-num="1"><img src={ShopLogo} alt="" className="navImage"></img></div>
         <div className={navMyPage} onClick={this.navTapHandler} nav-num="2"><img src={MyPageLogo} alt="" className="navImage"></img></div>
       </footer>
-    )
-  }
-}
-
-class MyPage extends React.Component {
-  constructor (props) {
-    super(props)
-    this.sightseeingHandler = this.sightseeingHandler.bind(this);
-  }
-  sightseeingHandler (n) {
-    this.props.sfunc(n)
-  }
-  render () {
-    return (
-      <div id='container'>
-        <button className='sightseeingBtn' onClick={() => this.sightseeingHandler(1)}>呉市の歴史を巡るコース</button>
-        <button className='sightseeingBtn' onClick={() => this.sightseeingHandler(2)}>居酒屋○次会コース（中通り内回り）</button>
-        <button className='sightseeingBtn' onClick={() => this.sightseeingHandler(5)}>夜のカフェバー巡りコース</button>
-      </div>
     )
   }
 }

@@ -3,7 +3,8 @@ const express = require('express')
 //const fs = require('fs')
 //const https = require('https')
 const app = express()
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const { response, Router } = require('express');
 
 /*
 const options = {
@@ -14,32 +15,40 @@ const options = {
 
 //https.createServer(options, app).listen(443)
 
-app.listen(3010, () => console.log('demo server open'))
+/*app.options('/posts', function(req, res){  
+  console.log("writing headers only");
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  res.end('');
+});*/
+
+app.listen(3005, () => console.log('demo server open'))
 
 const knex = require('knex')({
   dialect: 'sqlite3',
   connection: {
-    filename: 'realkure.sqlite3'
+    filename: 'realkure2_kosen.sqlite3'
   },
   useNullAsDefault: true
 })
 
 var Bookshelf = require('bookshelf')(knex)
 
-var StoreList = Bookshelf.Model.extend({
-  tableName: 'store_list'
-})
-
 var PlaceList = Bookshelf.Model.extend({
   tableName: 'place_list'
+})
+
+app.use(function(req, res, next){
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 })
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 app.get('/api/find', (req, res) => {
-  console.log(req.query)
-  new StoreList().where('id', '=', req.query.sid).fetch()
+  //console.log(req.query)
+  new PlaceList().where('id', '=', req.query.sid).fetch()
   .then((collection)=> {
     res.json({status: true, content: collection})
   })
@@ -48,8 +57,8 @@ app.get('/api/find', (req, res) => {
   })
 })
 
-app.get('/api/restaurant', (req, res) => {
-  new StoreList().where('gnere', '=', '食事').fetchAll()
+app.get('/api/shop', (req, res) => {
+  new PlaceList().where('genre', '=', '模擬店').fetchAll()
   .then((collection) => {
     res.json({status: true, content: collection.toArray()})
   })
@@ -58,8 +67,8 @@ app.get('/api/restaurant', (req, res) => {
   })
 })
 
-app.get('/api/cafe', (req, res) => {
-  new StoreList().where('gnere', '=', 'カフェ').fetchAll()
+app.get('/api/exhibition', (req, res) => {
+  new PlaceList().where('genre', '=', '展示').fetchAll()
   .then((collection) => {
     res.json({status: true, content: collection.toArray()})
   })
@@ -68,38 +77,10 @@ app.get('/api/cafe', (req, res) => {
   })
 })
 
-app.get('/api/tavern', (req, res) => {
-  new StoreList().where('gnere', '=', '居酒屋').fetchAll()
+app.get('/api/data', (req, res) => {
+  new PlaceList().fetchAll()
   .then((collection) => {
     res.json({status: true, content: collection.toArray()})
-  })
-  .catch((err) => {
-    res.json({status: false})
-  })
-})
-
-app.get('/api/hotel', (req, res) => {
-  new PlaceList().where('gnere', '=', '宿泊').fetchAll()
-  .then((collection) => {
-    res.json({status: true, content: collection.toArray()})
-  })
-  .catch((err) => {
-    res.json({status: false})
-  })
-})
-
-app.get('/api/other', (req, res) => {
-  new PlaceList().where('gnere', '=', 'その他').fetchAll()
-  .then((collection) => {
-    var collection_place = collection.toArray()
-    new StoreList().where('gnere', '=', 'その他').fetchAll()
-      .then((collection) => {
-        var collection_store = collection.toArray()
-        var collection_concat = collection_place.concat(collection_store)
-        res.json({status: true, content: collection_concat})
-      })
-      .catch((err) => {
-      })
   })
   .catch((err) => {
     res.json({status: false})
@@ -110,4 +91,3 @@ app.get('/api/other', (req, res) => {
 app.use('/public', express.static('./public'))
 app.use('/camera', express.static('./public'))
 app.use('/', express.static('./public'))
-

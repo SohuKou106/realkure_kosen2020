@@ -21,7 +21,8 @@ const options = {
   res.end('');
 });*/
 
-app.listen(3005, () => console.log('demo server open'))
+const port = process.env.PORT || 3005;
+app.listen(port, () => console.log('demo server open'))
 
 const knex = require('knex')({
   dialect: 'sqlite3',

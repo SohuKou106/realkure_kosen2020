@@ -2,18 +2,14 @@ import React from 'react'
 import { Map, Marker, Popup, TileLayer, Rectangle } from 'react-leaflet'
 import './leaflet.css'
 import './LMap.css'
-import './ReviewWindow.css'
 import './leaflet-routing-machine.css'
-import Routing from './RoutingMachine'
-import Routing2 from './RoutingMachine2'
 import noimage from './images/noimage.png'
 import request from 'superagent'
-import {FavButton} from './Favorite/FavButton'
-import {l} from './Language'
-import {langNum} from './MyPage'
-import {Search} from './Search/Search'
 import {ShopDetail} from './Shop/ShopDetail'
 import {SubjectPage} from './SubjectPage'
+import {shop, exhibition, vender, P, M, E, C, A,
+        second_norm, first_PE, second_PE, library, plaza,
+        openSpace, shop_Head, head, info} from './Marker'
 
 //残り
 //・「現在開催中のイベント」の完成
@@ -29,7 +25,7 @@ export class LMap extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      position: [34.232009, 132.602588], zoom:18, mobile_lat: null, mobile_lng: null,
+      position: [34.232009, 132.602588], zoom:19, mobile_lat: null, mobile_lng: null,
       rectangle: [[34.228199, 132.605666], [34.235941, 132.597804]],
       //position: [34.244659, 132.557402], zoom: 19, mobile_lat: null, mobile_lng: null,
       //rectangle: [[34.194218, 132.495934], [34.268731, 132.651786]],
@@ -48,7 +44,6 @@ export class LMap extends React.Component {
     this.props.before_page
     this.getCurrentPosition = this.getCurrentPosition.bind(this)
     this.mobilePosition = this.mobilePosition.bind(this)
-    this.bindmenuClicked = this.menuClicked.bind(this)
     this.bindshowRoot = this.showRoot.bind(this)    
   }  
 
@@ -93,24 +88,6 @@ export class LMap extends React.Component {
     this.setState({mobile_lat: lat, mobile_lng: lng}) 
   }
 
-  //サイドバー表示ボタンが押されたら呼び出される
-  menuClicked () {
-    if(this.state.menuShow == false){
-      this.setState({menuShow:true})
-    }
-    else{
-      this.setState({menuShow:false})
-    }
-  }
-
-  //サイドバーのチェックボタンが変更されたら呼び出される
-  updateCheck(checked_Copy){
-    if(checked_Copy.length > 0){
-      this.props.mapStatus.set(this.state.position, this.state.zoom, checked_Copy)
-      this.setState({checked:checked_Copy})
-    }    
-  }
-
   //ポップアップのお気に入りボタンが押されたら呼び出される
   favChange(state){
     this.setState(state)
@@ -126,13 +103,6 @@ export class LMap extends React.Component {
                sid={marker.id}>
       </Routing>
       this.setState({root: shopRouting})
-  }
-
-  //ポップアップのレビュー表示ボタンが押されたら呼び出される
-  showReview(id){
-    //console.log("show Review, id : " + id)
-    var reviewShow = this.state.reviewShow
-    this.setState({reviewShow: !reviewShow, reviewShopId: id})
   }
 
   //ポップアップの画像がタップされた時に詳細ページに移動
@@ -158,40 +128,31 @@ export class LMap extends React.Component {
   }
 
   moveSubPage(data){
+    this.props.mapStatus.set(this.state.position, this.state.zoom, this.state.checked)
     this.props.before_page.set("LMap")
     this.props.movePage({shop_data: data, Component: SubjectPage})
-  }
-
-  mapClicked(){    
-    if(this.state.reviewShow) this.setState({reviewShow: false})
   }
 
   zoomEnd(e){ 
     var zoom = e.target.getZoom()
     this.setState({zoom: zoom})
-    console.log("zoom Ended, zoom : " + zoom)
   }
 
   dragEnd(e){
     var center = e.target.getCenter()
     this.setState({position: center})
-    console.log("drag Ended, position : " + center)
-  }
-
-  movePage (){
-    this.props.mapStatus.set(this.state.position, this.state.zoom, this.state.checked)
-    this.props.before_page.set("LMap")
-    this.props.movePage({Component: Search})
   }
 
   render () {
     //デフォルトで表示されてるマーカー
     var markers_shop = new Array()
     var markers_ex = new Array()
+    var other = new Array()
+    var ven = new Array()
+    var p = new Array()
     var dataM, dataE, dataC, dataA    
 
     var shoplist = this.state.shop_list.slice()
-    console.log(shoplist)
 
     shoplist.forEach(function(shop,index) {
       var m = {
@@ -216,14 +177,22 @@ export class LMap extends React.Component {
 
       switch(shop.genre){
         case "模擬店":
-            markers_shop.push(m)
+          markers_shop.push(m)
           break
         case "展示":
-            markers_ex.push(m)
+          markers_ex.push(m)
+          break
+        case "その他":
+          other.push(m)
+          break
+        case "自販機":
+          ven.push(m)
+          break
+        case "駐車場":
+          p.push(m)
           break
         case "M":
           dataM = m
-          console.log(dataM)
           break
         case "E":
           dataE = m          
@@ -238,6 +207,7 @@ export class LMap extends React.Component {
     })
 
     var marker_M = null, marker_E = null, marker_C = null, marker_A = null
+    var marker_p = [], marker_ven = [], marker_other = []
 
     if(dataM != null){
       marker_M = <Marker position={dataM.coordinates} icon={M}>
@@ -249,7 +219,6 @@ export class LMap extends React.Component {
                     </div>
                   </Popup>
                 </Marker>
-
       marker_E = <Marker position={dataE.coordinates} icon={E}>
                   <Popup>          
                     <div className='popup_ImgField'>
@@ -258,8 +227,7 @@ export class LMap extends React.Component {
                       <div onClick={this.moveSubPage.bind(this, dataM)} className='map_RootButton'>詳細を見る{'>>'}</div>
                     </div>          
                   </Popup>
-                </Marker>
-    
+                </Marker>    
       marker_C = <Marker position={dataC.coordinates} icon={C}>
                   <Popup>          
                     <div className='popup_ImgField'>
@@ -269,7 +237,6 @@ export class LMap extends React.Component {
                     </div>          
                   </Popup>
                 </Marker>
-
       marker_A = <Marker position={dataA.coordinates} icon={A}>
                   <Popup>          
                     <div className='popup_ImgField'>
@@ -279,28 +246,70 @@ export class LMap extends React.Component {
                     </div>          
                   </Popup>
                 </Marker>
-     }
-
-    var nowEvent
-
-
+      
+      if(this.state.zoom >= 18){
+        if(p.length > 0){
+          marker_p = p.map((marker, index) => (
+            <Marker key={index} position={marker.coordinates} icon={P}/>
+          ))
+        }
+        if(ven.length > 0){
+          marker_ven = ven.map((marker, index) => {
+            return <Marker key={index} position={marker.coordinates} icon={vender}/>
+          })
+        }
+        if(other.length > 0){
+          marker_other = other.map((marker, index)=>{
+            var icon                       
+            switch(marker.name){
+              case "オープンスペース":
+                icon = openSpace
+                break
+              case "みんなの広場":
+                icon = plaza
+                break
+              case "本部":
+                icon = head
+                break
+              case "info":
+                icon = info
+                break
+              case "第2普通科棟":
+                icon = second_norm
+                break
+              case "第1体育館":
+                icon = first_PE
+                break
+              case "第2体育館":
+                icon = second_PE
+                break
+              case "模擬店本部":
+                icon = shop_Head
+                break
+              case "図書館棟":
+                icon = library
+                break
+            }
+            return(
+              <Marker key={index} position={marker.coordinates} icon={icon}>
+                <Popup>          
+                  <div className='popup_ImgField'>
+                    <div className='popup_Name'>{marker.name}</div>
+                    <img src={marker.img} className='popup_Image' onError={e => e.target.src = noimage} />            
+                  </div>          
+                </Popup>
+              </Marker>
+            )
+          })
+        }
+      }
+    }
+                 
     //Shopタブ，検索結果，お気に入りリストでお店の項目をタップしたときにLMapに遷移して表示するポップアップ
     var shopClickedPopup
 
     if(this.props.shop_data != null){
-      if(this.props.shop_data.lat != null && this.props.shop_data.lng != null){
-        if(this.props.shop_data.stag2 != null){
-          if(this.props.shop_data.stag3 != null){
-            var tag = "#" + this.props.shop_data.stag1 + "  #" + this.props.shop_data.stag2 + "  #" + this.props.shop_data.stag3    
-          }
-          else{
-            var tag = "#" + this.props.shop_data.stag1 + "  #" + this.props.shop_data.stag2
-          }  
-        }
-        else{
-          var tag = "#" + this.props.shop_data.stag1 
-        }
-        
+      if(this.props.shop_data.lat != null && this.props.shop_data.lng != null){        
         if(this.props.shop_data.genre === "模擬店"){
           shopClickedPopup =    
           <Popup position={[this.props.shop_data.lat, this.props.shop_data.lng]}>          
@@ -326,12 +335,12 @@ export class LMap extends React.Component {
     return (
       <div id='container'>
         <Map ref='map'
-             onclick={this.mapClicked.bind(this)}
              onzoomend={this.zoomEnd.bind(this)}
              ondragend={this.dragEnd.bind(this)}
-             center={this.props.mapStatus.center} zoom={this.props.mapStatus.zoom} minZoom={17} maxZoom={20} maxBounds={this.state.rectangle}>
+             center={this.props.mapStatus.center} zoom={this.props.mapStatus.zoom} minZoom={18} maxZoom={20} maxBounds={this.state.rectangle}>
           <TileLayer
             url="tiles_kosen/{z}/{x}/{y}.png"
+            //url="https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=972560e191b5476ea4062cbb39ba5cd0"
             attribution="&copy; <a href=&quot;http://www.thunderforest.com/outdoors/&quot;>Gravitystorm</a> / map data <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a>"
           />
           {markers_shop.map((marker, index) => (
@@ -339,25 +348,75 @@ export class LMap extends React.Component {
              <Popup>          
               <div className='popup_ImgField'>
                 <div className='popup_Name'>{marker.name}</div>
-                <img src={marker.img} className='popup_Image' onClick={this.moveShopDetail.bind(this, marker)} onError={e => e.target.src = noimage} />            
+                <img src={marker.img} className='popup_Image' onError={e => e.target.src = noimage} />            
               </div>          
             </Popup>
           </Marker>
           ))}         
 
-          {markers_ex.map((marker, index) => (
-            <Marker key={index} position={marker.coordinates} icon={exhibition}>
-              <Popup>          
-                <div className='popup_ImgField'>
-                  <div className='popup_Name'>{marker.name}</div>
-                  <img src={marker.img} className='popup_Image' onClick={this.moveShopDetail.bind(this, marker)} onError={e => e.target.src = noimage} />            
-                  <div onClick={this.moveShopDetail.bind(this, marker)} className='map_RootButton'>詳細を見る{'>>'}</div>
-                </div>          
-              </Popup>
-            </Marker>
-          ))}
+          {markers_ex.map((marker, index) => {
+             var offHours
+             var hours_weekdayData = marker.week.split('　')
+     
+             var now = new Date()
+             var day = now.getDate()
+             var hour = now.getHours()
+             var minute = now.getMinutes()
+     
+             var start //[0:時間, 1:分]
+             var end   //[0:時間, 1:分]
+             //hours_weekdayDataが[0:"10/31", 1:時刻, 2:"11/1", 3:時刻]の場合
+             if(hours_weekdayData.length > 1){
+               var day1_day = hours_weekdayData[0].split('/')[1] //1日目の日数
+               var day2_day = hours_weekdayData[3].split('/')[1] //2日目の日数
+     
+               if(day == day1_day){  //1日目なら
+                 var day1_hours = hours_weekdayData[1].split('-')
+                 start = day1_hours[0].split(':')
+                 end = day1_hours[1].split(':')
+               }
+               else if(day == day2_day){   //2日目なら
+                 //console.log("day 2, " + day2_day)
+                 var day2_hours = hours_weekdayData[3].split('-')
+                 start = day2_hours[0].split(':')
+                 end = day2_hours[1].split(':')
+               }
+               else{   //高専祭の日付じゃなかったら   
+                start = [23, 59]
+                end = [0, 0]
+               }
+             }
+             else{
+               if(day != 31 || day != 1){
+                  start = [23, 59]
+                  end = [0, 0]
+               }
+               else{
+                var hours = marker.week.split('-')
+                start = hours[0].split(':')
+                end = hours[1].split(':')
+               }
+             }
+             if((hour < start[0] || hour > end[0]) || (hour == start[0] && minute < start[1]) || (hour == end[0] && minute > end[1])){
+               offHours = <div className="popup_offHour">営業時間外</div>
+             }
+            return(
+              <Marker key={index} position={marker.coordinates} icon={exhibition}>
+                <Popup>          
+                  <div className='popup_ImgField'>
+                    <div className='popup_Name'>{marker.name}</div>
+                    <img src={marker.img} className='popup_Image' onClick={this.moveShopDetail.bind(this, marker)} onError={e => e.target.src = noimage} />            
+                    <div onClick={this.moveShopDetail.bind(this, marker)} className='map_RootButton'>詳細を見る{'>>'}</div>
+                    {offHours}
+                  </div>          
+                </Popup>
+              </Marker>
+              )
+            } 
+          )}
           {shopClickedPopup}
-          {marker_M}{marker_E}{marker_C}{marker_A}          
+          {marker_M}{marker_E}{marker_C}{marker_A}
+          {marker_p}{marker_ven}{marker_other}        
         </Map> 
         <Clock/>
       </div>
@@ -382,7 +441,7 @@ class Clock extends React.Component{
     var event = "-"
 
     //1日目
-    if(day === 23){
+    if(day === 31){
       switch(hour){
         case 10:
           if(minute >= 15){
@@ -507,69 +566,3 @@ class Clock extends React.Component{
     )
   }
 }
-
-
-
-export const mobilePoint = new L.Icon({
-  iconUrl: require('./assets/mobileIcon.png'),
-  iconRetinaUrl: require('./assets/mobileIcon.png'),
-  iconAnchor: [10, 10],
-  popupAnchor: [0, 10],
-  iconSize: [20, 20],
-  shadowUrl: require('./assets/marker-shadow.png'),
-  shadowSize: [30, 30],
-  shadowAnchor: [10, 15],
-})
-
-export const shop = new L.Icon({
-  iconUrl: require('./assets/marker_Shop.png'),
-  iconRetinaUrl: require('./assets/marker_Shop.png'),
-  iconAnchor: [10, 10],
-  popupAnchor: [0, 10],
-  iconSize: [20, 30],
-  shadowUrl: require('./assets/marker-shadow.png'),
-  shadowSize: [30, 30],
-  shadowAnchor: [10, 15],
-})
-
-export const exhibition = new L.Icon({
-  iconUrl: require('./assets/marker_Ex.png'),
-  iconRetinaUrl: require('./assets/marker_Ex.png'),
-  iconAnchor: [10, 10],
-  popupAnchor: [0, 10],
-  iconSize: [20, 30],
-  shadowUrl: require('./assets/marker-shadow.png'),
-  shadowSize: [30, 30],
-  shadowAnchor: [10, 15],
-})
-
-export const M = new L.Icon({
-  iconUrl: require('./assets/marker_M.png'),
-  iconRetinaUrl: require('./assets/marker_M.png'),
-  iconAnchor: [45, 15],
-  popupAnchor: [0, 0],
-  iconSize: [90, 30],
-})
-export const E = new L.Icon({
-  iconUrl: require('./assets/marker_E.png'),
-  iconRetinaUrl: require('./assets/marker_E.png'),
-  iconAnchor: [45, 15],
-  popupAnchor: [0, 0],
-  iconSize: [90, 30],
-})
-
-export const C = new L.Icon({
-  iconUrl: require('./assets/marker_C.png'),
-  iconRetinaUrl: require('./assets/marker_C.png'),
-  iconAnchor: [45, 15],
-  popupAnchor: [0, 0],
-  iconSize: [90, 30],
-})
-
-export const A = new L.Icon({
-  iconUrl: require('./assets/marker_A.png'),
-  iconRetinaUrl: require('./assets/marker_A.png'),
-  iconAnchor: [45, 15],
-  popupAnchor: [0, 0],
-  iconSize: [90, 30],
-})

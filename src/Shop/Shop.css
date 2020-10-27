@@ -1,11 +1,12 @@
 .shop_Tab {
-    height: 8vh;
+    height: 5vh;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     display: flex;
     flex-grow: 1;
     font-size: 4vw;
+    text-align: center;
     font-weight: bold;
 }
 
@@ -50,17 +51,11 @@
 }
 
 .shop_ElementS{
+    position: relative;
     width : calc(90% / 2);
     margin: 5px 5px;
     background-color: #FFFFFF;
     padding: 0px 0;
-    box-shadow: 2px 2px #CCCCCC;
-}
-
-.shop_Element{
-    background-color: #FFFFFF;
-    padding: 0px 0;
-    margin: 5px 30px;
     box-shadow: 2px 2px #CCCCCC;
 }
 
@@ -85,9 +80,21 @@
     margin: 3px;
 }
 
+.shop_InfoS{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 3px;
+}
+
 .shop_Name{
-    color: darkorange;
-    font-size: 5vw;
+    position: absolute;
+    color: #FFFFFF;
+    background-color: #00000088;
+    border-bottom: solid 3px #FFFFFF;
+    top: 0;
+    left:0;
+    font-size: 3vh;
     text-align: center;
 }
 
@@ -117,54 +124,46 @@
     text-align: center;
 }
 
+
+/*****************************************/
+/*            shop Detail                */
+/*****************************************/
+.shopD_List{    
+    display: flex;
+    flex-direction: column;
+    flex-grow: 12;
+    flex-basis: 0;
+    overflow-y: scroll;
+}
+
 .shopD_imgField{    
     position: relative
 }
 
 .shopD_Image{
-    width: 100vw;
-    margin: 0;
+    width: 50vw;
+    margin: 1vw 1vw;
 }
 
 .shopD_Intro{
     background-color: #FFFFFF;
-    box-shadow: 2px 2px #CCCCCC;
-    margin: 0 auto;
-    text-align: left;
-    width: 100vw - 40px;
-    padding: 0 20px;
+    margin: 10px auto;
+    text-align: center;
+    width: 80vw;
+    padding: 15px;
     font-size: 3vh;
     line-height: 170%;
     color: black;
-}
-
-.shopD_Tag{
-    font-size: 3vh;
-    text-align: right;
-    margin-left: 10px;
-    color: gray;
-}
-
-.shopD_Tags{
-    margin: 10px auto;
-    text-align: left;
-}
-
-.shopD_ImageGrad{
-    width: 100vw;
-    background: linear-gradient(#FFFFFF00, #22222285);
 }
 
 .shopD_NameText{
     width: 100vw;
     font-size: 5vh;
     font-weight: bold;
-    border-bottom: 3px solid #FFFFFF;
-    background-color: #00000088;
-    color: #FFFFFF;
-    position: absolute;
-    bottom: 10px;    
-    text-align: left;
+    border-bottom: 3px solid #123a44;
+    color: #297f94;
+    margin: 10px 0;
+    text-align: center;
 }
 
 .shopD_Table{
@@ -177,35 +176,135 @@
 }
 
 .shopD_Buttons{
+    position: absolute;
+    right: 10px;
+    margin: 10px auto;
     text-align: center;
 }
 
-.shopD_MapButton{    
-    background-color: #1E65D0;
-    margin: 20px 30px;
-    padding: 0px 5px;
+.shopD_PTDisplay{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 50px auto;
+}
+
+.shopD_PlaceTimeText{
+    width: 80%;
+    font-size: 4vh;
+    font-weight: bold;
+    border-bottom: 3px solid #123a44;
+    color: #297f94;
+    margin: 25px auto 0px auto;
+    text-align: center;
+}
+
+.shopD_PlaceTime{
+    width: 80%;
+    font-size: 3vh;
+    font-weight: bold;
+    color:#000000;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.shopD_MapButton{
+    background-color: #4e88dd;
+    margin: 25px auto 25px auto;
     width: 30vw;
-    height: 6vh;
+    height: 5vh;
+    font-size: 3vh;
     border-color: #1E65D0;
     color: #FFFFFF;
     cursor: pointer;
-    line-height: 20px;
+    line-height: 130%;
 }
 
-.shopD_ReviewButton{
-  background-color: #F05F8F;
-  margin: 20px 30px;  
-  padding: 0px 5px;
-  width: 30vw;
-  height: 6vh;
-  border-color: #F05F8F;
-  color: #FFFFFF;
-  cursor: pointer;
-  line-height: 20px;
+
+
+
+
+.subject_Image{
+    width: 100vw;
+    margin-right: 5vw;
 }
 
 .schedule{
     margin: 0 auto;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+}
+
+@supports (-webkit-touch-callout: none){
+    .schedule{
+        margin: 0 auto;
+        width: 100%;
+        height: -webkit-fill-available;
+    }
+  }
+
+.shop_Detail{
+    position: absolute;
+    font-size: 2vh;
+    right: 0;
+    bottom: 1vh;
+    padding: 0px 5px;
+    height: 3vh;
+    background-color: #00000088;
+    color: #FFFFFF;
+    cursor: pointer;
+    float: left;
+    line-height: 20px;
+  }
+
+.shop_offHour{
+    position: absolute;
+    font-size: 3vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    padding: 0px 5px;  
+    background-color: #00000088;
+    font-weight: bold;
+    color: #ff8e8e;
+    float: left;
+    line-height: 20px;
+}
+
+.subPage_Table{
+    width: 80%;
+    background-color: white;
+    text-align: center;
+    margin: 30px auto;
+    font-size: 3vh;
+    font-weight: bold;
+    border: solid 3px #297f94;
+}
+
+table tr td:nth-of-type(1){
+    width: 15%;
+    text-align: center;
+    margin: 15px 10px;
+    padding: 15px auto;
+    background-color: #afdbe6;
+    border: solid 2px #AAAAAA;
+    line-height: 150%;
+    border-collapse: collapse;
+}
+
+table tr td:nth-of-type(2){
+    width: 65%;
+    text-align: center;
+    margin: 15px auto;
+    padding: 10px;
+    background-color: #FFFFFF;
+    border-bottom: solid 2px #AAAAAA;
+    border-top: solid 2px #AAAAAA;
+    border-left: solid 2px #AAAAAA;
+    border-right: solid 2px #AAAAAA;
+    line-height: 150%;
+    border-collapse: collapse;
 }

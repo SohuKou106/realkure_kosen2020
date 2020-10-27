@@ -3,12 +3,9 @@ import classNames from 'classnames'
 import request from 'superagent'
 import noimage from '../images/noimage.png'
 import './Shop.css'
-import {langNum} from '../MyPage'
-import {Search} from '../Search/Search'
-import {l} from '../Language'
-import search from '../images/search.png'
 import { TrianglesDrawMode } from 'three'
 import { ShopDetail } from './ShopDetail'
+import { marker } from 'leaflet'
 
 export class Shop extends React.Component {
   constructor (props) {
@@ -127,33 +124,19 @@ export class Shop extends React.Component {
     }
   }
 
-  movePage (){
-    this.props.before_page.set("Shop")
-    this.props.movePage({Component: Search})
-  }
 
   render () {
-    console.log(this.state.nav)
     var Shop = classNames({'shop-Current': this.state.nav[0]}, {'shop-None': !this.state.nav[0]})
     var Exhibition = classNames({'shop-Current': this.state.nav[1]}, {'shop-None': !this.state.nav[1]})
-
-    /*
-    var navNum = 0
-    if(this.state.nav[0]) navNum = 0
-    else navNum = 1
-    */
 
     var shop_list
 
     if(this.state.nav[0]){
-      console.log("shop")
       shop_list = this.state.shop_list.map(e => {
         return (
           <div key={`${e.id}`} className="shop_ElementS" onClick={this.shopPosition.bind(this, e)}>
             <div className="shop_ImgField"><img src={'./images/shops/' + `${e.id}` + '.jpg'} className="shop_ImageS" onError={e => e.target.src = noimage}/></div>
-            <div className="shop_Info">
-              <div className="shop_NameS">{e.name}</div>
-            </div>
+              <div className="shop_Name">{e.name}</div>            
           </div>
         )
       })
@@ -163,21 +146,64 @@ export class Shop extends React.Component {
         </div>
     }
     else{
-      console.log("ex")
       shop_list = this.state.shop_list.map(e => {
+        var offHours
+        var hours_weekdayData = e.hours_weekday.split('　')
+
+        var now = new Date()
+        var day = now.getDate()
+        var hour = now.getHours()
+        var minute = now.getMinutes()
+
+        var start //[0:時間, 1:分]
+        var end   //[0:時間, 1:分]
+        //hours_weekdayDataが[0:"10/31", 1:時刻, 2:"11/1", 3:時刻]の場合
+        if(hours_weekdayData.length > 1){
+          var day1_day = hours_weekdayData[0].split('/')[1] //1日目の日数
+          var day2_day = hours_weekdayData[3].split('/')[1] //2日目の日数
+
+          if(day == day1_day){  //1日目なら
+            var day1_hours = hours_weekdayData[1].split('-')
+            start = day1_hours[0].split(':')
+            end = day1_hours[1].split(':')
+          }
+          else if(day == day2_day){   //2日目なら
+            var day2_hours = hours_weekdayData[3].split('-')
+            start = day2_hours[0].split(':')
+            end = day2_hours[1].split(':')
+          }
+          else{   //高専祭の日付じゃなかったら
+            start = [23, 59]
+            end = [0, 0]
+          }
+        }
+        else{
+          if(day != 31 || day != 1){
+            start = [23, 59]
+            end = [0, 0]
+          }
+          else{
+            var hours = marker.week.split('-')
+            start = hours[0].split(':')
+            end = hours[1].split(':')
+          }
+        }
+        if((hour < start[0] || hour > end[0]) || (hour == start[0] && minute < start[1]) || (hour == end[0] && minute > end[1])){
+          offHours = <div className="shop_offHour">営業時間外</div>
+        }
+
         return (          
-          <div key={`${e.id}`} className="shop_Element" onClick={this.shopDetail.bind(this, e)}>
-            <div className="shop_ImgField"><img src={'./images/shops/' + `${e.id}` + '.jpg'} className="shop_Image" onError={e => e.target.src = noimage}/></div>
-            <div className="shop_Info">
-              <div className="shop_Name">{e.name}</div>
-              <div className="shop_Intro">{e.intro}</div>
-            </div>          
-          </div>          
+          <div key={`${e.id}`} className="shop_ElementS" onClick={this.shopDetail.bind(this, e)}>
+          <div className="shop_ImgField"><img src={'./images/shops/' + `${e.id}` + '.jpg'} className="shop_ImageS" onError={e => e.target.src = noimage}/></div>
+            <div className="shop_Name">{e.name}</div>
+            <div className="shop_Detail" onClick={this.shopDetail.bind(this, e)}>詳細を見る{">>"}</div>
+            {offHours}
+          </div>
         )
       })
 
       shop_list =
-      <div className='shop_List'>
+      <div className='shop_ListS'>
         {shop_list}
       </div>
     }

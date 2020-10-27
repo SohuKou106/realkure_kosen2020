@@ -14,11 +14,9 @@ import MyPageLogo from './images/mypage.png'
 import classNames from 'classnames'
 import {LMap} from './LMap'
 import {Shop} from './Shop/Shop'
-import {MyPage} from './MyPage'
-import {Camera} from './Camera'
-import {Favorite} from './Favorite/Favorite'
 import {Schedule} from './Schedule'
 import {BeforePage, LMapStatus, ShopData} from './Utilities'
+import ReactGA from 'react-ga';
 
 //URLの状態によってホームかカメラかを分ける
 const App = () => (
@@ -26,7 +24,6 @@ const App = () => (
     <div>
       <Switch>
         <Route exact path='/' component={Home} />
-        <Route path='/camera' component={Camera} />
       </Switch>
     </div>
   </Router>
@@ -62,11 +59,16 @@ class Home extends React.Component {
       },
       sightseeing: 0,
       checked: [true, true, true, true, true],
-      favId : new Favorite(new Array()),
-      mapStatus: new LMapStatus([34.232009, 132.602588], 18, [true, true, true, true, true]),
+      mapStatus: new LMapStatus([34.232009, 132.602588], 19, [true, true, true, true, true]),
       before_page : new BeforePage(null, this.movePage.bind(this)),
       search_res: [],
     }
+  }
+
+  componentDidMount(){
+    const {pathname} = this.props.location;
+    ReactGA.set({page:pathname});
+    ReactGA.pageview(pathname);
   }
 
   //**** タブ（フッター）クリック時 ****
@@ -105,7 +107,6 @@ class Home extends React.Component {
 
   //**** お店の位置を地図上に表示 ****
   shopLocate(shop_data){
-    console.log(shop_data)
     this.setState({shop_data: shop_data, Component: LMap, nav: 0, sightseeing: 0})    
     this.bindFunc(-1)
   }

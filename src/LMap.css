@@ -29,8 +29,8 @@
 }
 
 .popup_Image{
-  width: 20vh;
-  height: 20vh;
+  width: 25vh;
+  height: 25vh;
 }
 
 .popup_Name{
@@ -46,6 +46,22 @@
   color: lightgray;
   font-size: 2vh;
   left: 0;  
+}
+
+.popup_offHour{
+  position: absolute;
+  font-size: 2vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  padding: 0px 5px;  
+  background-color: #00000088;
+  font-weight: bold;
+  color: #ff8e8e;
+  float: left;
+  line-height: 20px;
 }
 
 .event_Window{

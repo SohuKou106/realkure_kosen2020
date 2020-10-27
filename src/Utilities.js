@@ -1,8 +1,5 @@
 import {LMap} from './LMap'
 import {Shop} from './Shop/Shop'
-import {FavList} from './Favorite/FavList'
-import {Search} from './Search/Search'
-import {Search_Result} from './Search/Search_Result'
 
 //*******複数のページからアクセスできるページに移動する前に前の画面を保存しておく*******
 export class BeforePage{    
@@ -23,9 +20,6 @@ export class BeforePage{
                                         sholi: null, sreg_holi: null,},
                                         Component: LMap}); break;
             case "Shop": this.movePage({Component: Shop}); break;
-            case "FavList": this.movePage({Component: FavList}); break;
-            case "Search": this.movePage({Component: Search}); break;
-            case "Search_Result": this.movePage({Component: Search_Result}); break;
         }
     }
 }

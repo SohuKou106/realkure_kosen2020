@@ -68,10 +68,10 @@ class Home extends React.Component {
   }
 
   componentDidMount(){
-    const {pathname} = this.props.location;
+    /*const {pathname} = this.props.location;
     ReactGA.set({page:pathname});
     console.log("componentDidMount" + pathname)
-    ReactGA.pageview(pathname);
+    ReactGA.pageview(pathname);*/
   }
 
   //**** タブ（フッター）クリック時 ****

@@ -17,7 +17,6 @@ import {Shop} from './Shop/Shop'
 import {Schedule} from './Schedule'
 import {BeforePage, LMapStatus, ShopData} from './Utilities'
 import ReactGA from 'react-ga';
-import Div100vh from 'react-div-100vh'
 
 ReactGA.initialize('UA-181413223-1')
 

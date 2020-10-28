@@ -17,6 +17,9 @@ import {Shop} from './Shop/Shop'
 import {Schedule} from './Schedule'
 import {BeforePage, LMapStatus, ShopData} from './Utilities'
 import ReactGA from 'react-ga';
+import Div100vh from 'react-div-100vh'
+
+ReactGA.initialize('UA-181413223-1')
 
 //URLの状態によってホームかカメラかを分ける
 const App = () => (
@@ -68,6 +71,7 @@ class Home extends React.Component {
   componentDidMount(){
     const {pathname} = this.props.location;
     ReactGA.set({page:pathname});
+    console.log("componentDidMount" + pathname)
     ReactGA.pageview(pathname);
   }
 
@@ -116,14 +120,12 @@ class Home extends React.Component {
     this.setState(state)
   }
 
-
-
   render () {  
     const {Component} = this.state
     return (
       <div className="App">
         <Header />
-         <Component            
+        <Component            
             shop_data={this.state.shop_data}
             shopLocate={this.bindShopLocate}
             sfunc={this.sbindFunc}

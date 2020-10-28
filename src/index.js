@@ -6,7 +6,6 @@ import {CookiesProvider} from 'react-cookie'
 import ReactGA from 'react-ga';
 
 //import * as serviceWorker from './serviceWorker';
-ReactGA.initialize('G-GE7SGQ85YG')
 
 ReactDOM.render(<CookiesProvider><App /></CookiesProvider>, document.getElementById('root'));
 

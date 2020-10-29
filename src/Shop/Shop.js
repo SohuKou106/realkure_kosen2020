@@ -46,17 +46,17 @@ export class Shop extends React.Component {
       lat: e.latitude,
       lng: e.longitude,
       genre: e.genre,
-      sid: e.id,
-      sname: e.name,
-      stag1: e.tag1,
-      stag2: e.tag2,
-      stag3: e.tag3,
-      saddress1: e.address1,
-      saddress2: e.address2,
-      sweek: e.hours_weekday,
-      sholi: e.hours_holiday,
-      sreg_holi: e.regular_holiday,
-      sintro: e.intro
+      id: e.id,
+      name: e.name,
+      tag1: e.tag1,
+      tag2: e.tag2,
+      tag3: e.tag3,
+      address1: e.address1,
+      address2: e.address2,
+      week: e.hours_weekday,
+      holi: e.hours_holiday,
+      reg_holi: e.regular_holiday,
+      intro: e.intro
     }
     this.props.shopLocate(shop_data)
   }
@@ -66,17 +66,17 @@ export class Shop extends React.Component {
       lat: e.latitude,
       lng: e.longitude,
       genre: e.genre,
-      sid: e.id,
-      sname: e.name,
-      stag1: e.tag1,
-      stag2: e.tag2,
-      stag3: e.tag3,
-      saddress1: e.address1,
-      saddress2: e.address2,
-      sweek: e.hours_weekday,
-      sholi: e.hours_holiday,
-      sreg_holi: e.regular_holiday,
-      sintro: e.intro
+      id: e.id,
+      name: e.name,
+      tag1: e.tag1,
+      tag2: e.tag2,
+      tag3: e.tag3,
+      address1: e.address1,
+      address2: e.address2,
+      week: e.hours_weekday,
+      holi: e.hours_holiday,
+      reg_holi: e.regular_holiday,
+      intro: e.intro
     }
     this.props.before_page.set("Shop")
     this.props.movePage({shop_data: shop_data, Component: ShopDetail})
@@ -124,6 +124,65 @@ export class Shop extends React.Component {
     }
   }
 
+  checkNowOpen(e){
+    var offHours
+    var hours_weekdayData = e.hours_weekday.split('　')
+
+    var now = new Date()
+    var day = now.getDate()
+    var hour = now.getHours()
+    var minute = now.getMinutes()
+
+    var start //[0:時間, 1:分]
+    var end   //[0:時間, 1:分]
+    //hours_weekdayDataが[0:"10/31", 1:時刻, 2:"11/1", 3:時刻]の場合
+    if(hours_weekdayData.length == 4){
+      var day1_day = hours_weekdayData[0].split('/')[1] //1日目の日数
+      var day2_day = hours_weekdayData[3].split('/')[1] //2日目の日数
+
+      if(day == day1_day){  //1日目なら
+        var day1_hours = hours_weekdayData[1].split('-')
+        start = day1_hours[0].split(':')
+        end = day1_hours[1].split(':')
+      }
+      else if(day == day2_day){   //2日目なら
+        var day2_hours = hours_weekdayData[3].split('-')
+        start = day2_hours[0].split(':')
+        end = day2_hours[1].split(':')
+      }
+      else{   //高専祭の日付じゃなかったら
+        start = [23, 59]
+        end = [0, 0]
+      }
+    }
+    else if(hours_weekdayData.length == 2){
+       if(day == hours_weekdayData[0].split('/')[1]){
+         var day_hours = hours_weekdayData[1].split('-')
+         start = day_hours[0].split(':')
+         end = day_hours[1].split(':')
+       }
+       else{
+         start = [23, 59]
+         end = [0, 0]
+       }
+    }
+    else{
+      if(day != 31 && day != 1){
+        start = [23, 59]
+        end = [0, 0]
+      }
+      else{
+        var hours = e.hours_weekday.split('-')
+        start = hours[0].split(':')
+        end = hours[1].split(':')
+      }
+    }
+    if((hour < start[0] || hour > end[0]) || (hour == start[0] && minute < start[1]) || (hour == end[0] && minute > end[1])){
+      offHours = <div className="shop_offHour">営業時間外</div>
+    }
+    return offHours
+  }
+
 
   render () {
     var Shop = classNames({'shop-Current': this.state.nav[0]}, {'shop-None': !this.state.nav[0]})
@@ -147,57 +206,14 @@ export class Shop extends React.Component {
     }
     else{
       shop_list = this.state.shop_list.map(e => {
-        var offHours
-        var hours_weekdayData = e.hours_weekday.split('　')
-
-        var now = new Date()
-        var day = now.getDate()
-        var hour = now.getHours()
-        var minute = now.getMinutes()
-
-        var start //[0:時間, 1:分]
-        var end   //[0:時間, 1:分]
-        //hours_weekdayDataが[0:"10/31", 1:時刻, 2:"11/1", 3:時刻]の場合
-        if(hours_weekdayData.length > 1){
-          var day1_day = hours_weekdayData[0].split('/')[1] //1日目の日数
-          var day2_day = hours_weekdayData[3].split('/')[1] //2日目の日数
-
-          if(day == day1_day){  //1日目なら
-            var day1_hours = hours_weekdayData[1].split('-')
-            start = day1_hours[0].split(':')
-            end = day1_hours[1].split(':')
-          }
-          else if(day == day2_day){   //2日目なら
-            var day2_hours = hours_weekdayData[3].split('-')
-            start = day2_hours[0].split(':')
-            end = day2_hours[1].split(':')
-          }
-          else{   //高専祭の日付じゃなかったら
-            start = [23, 59]
-            end = [0, 0]
-          }
-        }
-        else{
-          if(day != 31 || day != 1){
-            start = [23, 59]
-            end = [0, 0]
-          }
-          else{
-            var hours = marker.week.split('-')
-            start = hours[0].split(':')
-            end = hours[1].split(':')
-          }
-        }
-        if((hour < start[0] || hour > end[0]) || (hour == start[0] && minute < start[1]) || (hour == end[0] && minute > end[1])){
-          offHours = <div className="shop_offHour">営業時間外</div>
-        }
+        var offHours = this.checkNowOpen(e)
 
         return (          
-          <div key={`${e.id}`} className="shop_ElementS" onClick={this.shopDetail.bind(this, e)}>
+          <div key={`${e.id}`} className="shop_ElementS" onClick={() => this.shopDetail(e)}>
           <div className="shop_ImgField"><img src={'./images/shops/' + `${e.id}` + '.jpg'} className="shop_ImageS" onError={e => e.target.src = noimage}/></div>
             <div className="shop_Name">{e.name}</div>
-            <div className="shop_Detail" onClick={this.shopDetail.bind(this, e)}>詳細を見る{">>"}</div>
-            {offHours}
+            <div className="shop_Detail" onClick={() => this.shopDetail(e)}>詳細を見る{">>"}</div>
+            <div onClick={() => this.shopDetail(e)}>{offHours}</div>
           </div>
         )
       })

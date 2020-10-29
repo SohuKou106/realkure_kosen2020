@@ -62,7 +62,7 @@
 }
 
 .event_Title{
-  width: 100%;
+  padding: 5px 10px;
   border-bottom: solid 3px #2c89A0;  
   font-size: 2vh;
   text-align: center;
@@ -70,7 +70,7 @@
 }
 
 .event_Text{
-  width: 100%;
+  padding: 10px;
   font-size: 3vh;
   text-align: center;
   color: #000000;

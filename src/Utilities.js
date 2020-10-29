@@ -14,10 +14,10 @@ export class BeforePage{
 
     backPage(){
         switch(this.page){
-            case "LMap": this.movePage({shop_data:{lat:null, lng:null, sid:null, sname:null,
-                                        saddress1: null, saddress2:null, sintro:null,
-                                        stag1: null, stag2: null, stag3: null, sweek: null,
-                                        sholi: null, sreg_holi: null,},
+            case "LMap": this.movePage({shop_data:{lat:null, lng:null, id:null, name:null,
+                                        address1: null, address2:null, intro:null,
+                                        tag1: null, tag2: null, tag3: null, week: null,
+                                        holi: null, reg_holi: null,},
                                         Component: LMap}); break;
             case "Shop": this.movePage({Component: Shop}); break;
         }

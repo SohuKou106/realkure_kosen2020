@@ -31,21 +31,22 @@ export class ShopDetail extends React.Component{
                 <div className='backbtn'>
                     <div type='button' name='back' onClick={this.backPage.bind(this)}><img src={back} alt='' className='navImage'/></div>
                 </div>
-                <div className='shopD_NameText'>{shopData.sname}</div>
+                <div className='shopD_NameText'>{shopData.name}</div>
                 <div className='shopD_List'>
                     <div className='shopD_imgField'>
-                        <img className='shopD_Image' src={'./images/shops/' + `${shopData.sid}` + '.jpg'} onError={e => e.target.src = noimage} />
+                        <img className='shopD_Image' src={'./images/shops/' + `${shopData.id}` + '.jpg'} onError={e => e.target.src = noimage} />
                     </div>
-                    <div className='shopD_Intro'>{shopData.sintro}</div>
+                    <div className='shopD_Intro'>{shopData.intro}</div>
                     <div className='shopD_PlaceTimeText'>場所</div>
-                    <div className='shopD_PlaceTime'>{shopData.saddress1}</div>
+                    <div className='shopD_PlaceTime'>{shopData.address1}</div>
                     <div className='shopD_PlaceTimeText'>営業時間</div>
-                    <div className='shopD_PlaceTime'>{shopData.sweek}</div>
+                    <div className='shopD_PlaceTime'>{shopData.week}</div>
                     <div>
-                        <button onClick={this.moveLMap.bind(this, {coordinates:{lat:this.props.shop_data.lat, lng:this.props.shop_data.lng}, id:this.props.shop_data.sid})} className='shopD_MapButton'>地図で確認</button>
+                        <button onClick={this.moveLMap.bind(this)} className='shopD_MapButton'>地図で確認</button>
                     </div>
                 </div>
             </div>                
         )
+        // //{coordinates:{lat:this.props.shop_data.lat, lng:this.props.shop_data.lng}, id:this.props.shop_data.sid})} className='shopD_MapButton'>地図で確認</button>
     }
 }

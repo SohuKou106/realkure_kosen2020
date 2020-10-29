@@ -38,7 +38,6 @@ class Home extends React.Component {
   constructor (props) {
     super(props)
     this.bindFunc = this.func.bind(this)
-    this.sbindFunc = this.sfunc.bind(this)
     this.bindShopLocate = this.shopLocate.bind(this)
     this.state = {
       nav: 0, navBool: [true, false, false],
@@ -47,19 +46,18 @@ class Home extends React.Component {
         lat: null,
         lng: null,
         genre: null,
-        sid: null,
-        sname: null,
-        saddress1: null,
-        saddress2: null,
-        sintro: null,
-        stag1: null,
-        stag2: null,
-        stag3: null,
-        sweek: null,
-        sholi: null,
-        sreg_holi: null,     
+        id: null,
+        name: null,
+        address1: null,
+        address2: null,
+        intro: null,
+        tag1: null,
+        tag2: null,
+        tag3: null,
+        week: null,
+        holi: null,
+        reg_holi: null,     
       },
-      sightseeing: 0,
       checked: [true, true, true, true, true],
       mapStatus: new LMapStatus([34.232009, 132.602588], 19, [true, true, true, true, true]),
       before_page : new BeforePage(null, this.movePage.bind(this)),
@@ -92,10 +90,10 @@ class Home extends React.Component {
     }
     switch (nav) {
       case -1: this.setState({nav: 0, navBool: navCopy, Component: LMap}); break
-      case 0: this.setState({shop_data:{lat:null, lng:null, genre:null, sid:null, sname:null,
-                             saddress1: null, saddress2:null, sintro:null,
-                             stag1: null, stag2: null, stag3: null, sweek: null,
-                             sholi: null, sreg_holi: null,},
+      case 0: this.setState({shop_data:{lat:null, lng:null, genre:null, id:null, name:null,
+                             address1: null, address2:null, intro:null,
+                             tag1: null, tag2: null, tag3: null, week: null,
+                             holi: null, reg_holi: null,},
                             nav: nav, navBool: navCopy, Component: LMap}); break     
       case 1: this.setState({nav: nav, navBool: navCopy, Component: Shop}); break
       case 2: this.setState({nav: nav, navBool: navCopy, Component: Schedule}); break
@@ -103,14 +101,9 @@ class Home extends React.Component {
     }
   }
 
-  //**** 観光ルート表示時 ****
-  sfunc (n) {
-    this.setState({sightseeing: n, nav: 0, navBool: [true, false, false], Component: LMap})
-  }
-
   //**** お店の位置を地図上に表示 ****
   shopLocate(shop_data){
-    this.setState({shop_data: shop_data, Component: LMap, nav: 0, sightseeing: 0})    
+    this.setState({shop_data: shop_data, Component: LMap, nav: 0})
     this.bindFunc(-1)
   }
 
@@ -127,8 +120,6 @@ class Home extends React.Component {
         <Component            
             shop_data={this.state.shop_data}
             shopLocate={this.bindShopLocate}
-            sfunc={this.sbindFunc}
-            sightseeing={this.state.sightseeing}
             shopLocate={this.shopLocate.bind(this)}
             checked={this.state.checked}
             favId={this.state.favId}

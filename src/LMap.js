@@ -20,7 +20,7 @@ export class LMap extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      position: [34.232009, 132.602588], zoom:19, mobile_lat: null, mobile_lng: null,
+      position: [34.232009, 132.602588], zoom:19, //mobile_lat: null, mobile_lng: null,
       rectangle: [[34.228199, 132.605666], [34.235941, 132.597804]],
       shop_list: [],
       checked: [true, true, true, true, true],
@@ -35,17 +35,17 @@ export class LMap extends React.Component {
     this.props.reviewShopId
     this.props.movePage(this.state)
     this.props.before_page
-    this.getCurrentPosition = this.getCurrentPosition.bind(this)
-    this.mobilePosition = this.mobilePosition.bind(this)
+    //this.getCurrentPosition = this.getCurrentPosition.bind(this)
+    //this.mobilePosition = this.mobilePosition.bind(this)
   }  
 
   //App.jsで実装するHome画面から画面そのものであるComponentを切り替えることでページ切り替えを実現
   //それぞれの画面の初期化などは，各スクリプトのcomponentWillMountで行っている
   componentWillMount () {
-    if (navigator.geolocation) {
+    /*if (navigator.geolocation) {
       this.getCurrentPosition();
       setInterval(this.getCurrentPosition, 5000)
-    }
+    }*/
 
     this.setState({position: this.props.mapStatus.center, 
                    zoom: this.props.mapStatus.zoom,
@@ -61,10 +61,10 @@ export class LMap extends React.Component {
   }
 
   componentWillUnmount () {
-    clearInterval(this.getCurrentPosition) 
+    //clearInterval(this.getCurrentPosition) 
   }
 
-  getCurrentPosition () {
+  /*getCurrentPosition () {
     //Safariはhttps接続でないと，位置情報を取得できない
     //latとlngがnullのままなので，マーカーが表示されない
     navigator.geolocation.getCurrentPosition(
@@ -77,7 +77,7 @@ export class LMap extends React.Component {
     lat = data.latitude
     lng = data.longitude
     this.setState({mobile_lat: lat, mobile_lng: lng}) 
-  }
+  }*/
 
   //ポップアップのお気に入りボタンが押されたら呼び出される
   favChange(state){
@@ -187,11 +187,11 @@ export class LMap extends React.Component {
 
   render () {
     //現在地
-    var MobileMarker
+    /*var MobileMarker
 
     if(this.state.mobile_lat != null && this.state.mobile_lng != null){
       MobileMarker = <Marker position={[this.state.mobile_lat, this.state.mobile_lng]} icon={mobilePoint}></Marker>
-    }
+    }*/
 
     //デフォルトで表示されてるマーカー
     var markers_shop = new Array()
@@ -396,7 +396,6 @@ export class LMap extends React.Component {
             url="tiles_kosen/{z}/{x}/{y}.png"
             attribution="&copy; <a href=&quot;http://www.thunderforest.com/outdoors/&quot;>Gravitystorm</a> / map data <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a>"
           />
-          {MobileMarker}
           {markers_shop.map((marker, index) => (
             <Marker key={index} position={[marker.lat, marker.lng]} icon={shop}>
              <Popup>          

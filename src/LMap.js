@@ -9,7 +9,7 @@ import {ShopDetail} from './Shop/ShopDetail'
 import {SubjectPage} from './SubjectPage'
 import {shop, exhibition, vender, P, M, E, C, A,
         second_norm, first_PE, second_PE, library, plaza,
-        openSpace, shop_Head, head, info, mobilePoint} from './Marker'
+        openSpace, shop_Head, head, info, mobilePoint, martialArts} from './Marker'
 
 //import '@babel/polyfill';
 
@@ -335,6 +335,9 @@ export class LMap extends React.Component {
                 break
               case "図書館棟":
                 icon = library
+                break
+              case "武道場":
+                icon = martialArts
                 break
             }
             return(

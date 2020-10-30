@@ -142,3 +142,10 @@ export const mobilePoint = new L.Icon({
     iconAnchor: [25, 15],
     iconSize: [50, 30]
   })
+
+  export const martialArts = new L.Icon({
+    iconUrl: require('./assets/marker_info.png'),
+    iconRetinaUrl: require('./assets/marker_武道.png'),
+    iconAnchor: [30, 15],
+    iconSize: [60, 30]
+  })

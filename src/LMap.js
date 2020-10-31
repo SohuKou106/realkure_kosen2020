@@ -27,7 +27,8 @@ export class LMap extends React.Component {
       menuShow: false,
       favChanged: false,
       root: null,
-      reviewShow: false,            
+      reviewShow: false,
+      nowevent: null,
     }
     this.props.shop_data
     this.props.favId
@@ -44,8 +45,10 @@ export class LMap extends React.Component {
   componentWillMount () {
     /*if (navigator.geolocation) {
       this.getCurrentPosition();
-      setInterval(this.getCurrentPosition, 5000)
     }*/
+    nowevent = <Clock/>
+
+    setInterval(this.nowEvent, 30000)
 
     this.setState({position: this.props.mapStatus.center, 
                    zoom: this.props.mapStatus.zoom,
@@ -122,6 +125,10 @@ export class LMap extends React.Component {
   dragEnd(e){
     var center = e.target.getCenter()
     this.setState({position: center})
+  }
+
+  nowEvent(){
+    this.state.nowevent = <Clock/>
   }
 
   checkNowOpen(week){
@@ -427,7 +434,7 @@ export class LMap extends React.Component {
           {marker_M}{marker_E}{marker_C}{marker_A}
           {marker_p}{marker_ven}{marker_other}        
         </Map> 
-        <Clock/>
+        {this.state.nowevent}
       </div>
     )
   }
